@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="allmap" ref="allmap"></div>
-    <!-- <router-view></router-view> -->
   </div>
 </template>
 
@@ -13,14 +12,12 @@ import OSM from "ol/source/OSM";
 import XYZ from "ol/source/XYZ";
 import { transform } from "ol/proj";
 import { toLonLat } from "ol/proj";
-import addAlarmZone from "../../js/addAlarmZone";
-import addShip from "../../js/addShip";
 
 export default {
   name: "HelloWorld",
   data() {
     return {
-      map: null
+      map: null,
     };
   },
   methods: {
@@ -60,30 +57,25 @@ export default {
           transform(_this.map.getEventCoordinate(event),"EPSG:3857","EPSG:4326")
         );
       });
-    }
+    },
+    //
   },
 
   mounted() {
     this.drawMap();
-    this.mouseSite();
-   addAlarmZone(this.map);
-   addShip(this.map);
+    this.mouseSite(); 
+    this.$emit('getMap',this.map) 
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-*{
-  margin: 0;
-  padding: 0;
-}
+
 /*设置地图的宽高*/
 #allmap{
- margin:0px; 
- height: 800px;
+ height: 850px;
  width:100%; 
  overflow: hidden;
- padding: 0px; 
 } 
 </style>

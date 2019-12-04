@@ -10,22 +10,27 @@ import {toStringHDMS} from 'ol/coordinate'
 
 export default function addShip(map){
 
+    const PI = 3.1415926
     var shipLayer = new VectorLayer({
         source: new Vector()
     })
 
     var shipX = [124.55532704987269,125.96099372772944,126.96099372772944,127.5648312701592,128.14936958986868,128.9943457747954]
     var shipY = [31.89606535438317]
+    var shipRotation = (PI/2)
 
     var styleNormal = new Style({
         image: new Icon({
            src:'../../static/images/ship/ship_normal.png',
+           rotation:shipRotation,
         })
     })
     var styleAlarm = new Style({
         image: new Icon({
-           src:'../../static/images/ship/ship_normal.png',
-           rotation: (3.14/4)
+           src:'../../static/images/ship/ship_alarm.png',
+           rotation: shipRotation,
+           color:"#f00"
+
         })
     })
 
@@ -36,11 +41,15 @@ export default function addShip(map){
             shipLayer.getSource().removeFeature(feature)
         }
         var shipFeature= new Feature({
-			geometry: new Point(fromLonLat([shipX[(i)%6],shipY[0]]))
+			geometry: new Point(fromLonLat([shipX[i%6],shipY[0]]))
         })
         // shipFeature.setProperties(shipInfo)  
         shipFeature.setId(shipId)    
-		shipFeature.setStyle(styleNormal);
+        if((i%6) == 2 || (i%6) == 3){
+            shipFeature.setStyle(styleAlarm);
+        }else{
+            shipFeature.setStyle(styleNormal);
+        }
         shipLayer.getSource().addFeature(shipFeature)
     }
 
@@ -50,6 +59,6 @@ export default function addShip(map){
         ship(1)
         i++
         map.addLayer(shipLayer)
-    },1000)
+    },2000)
 
 }
