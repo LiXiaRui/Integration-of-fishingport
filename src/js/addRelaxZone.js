@@ -9,12 +9,19 @@ import addShip from "./addShip";
 
 export default function addAlarmZone(map) {
     var relaxShipZoneSource = new VectorSource()
+    var wordZoneSource = new VectorSource()
 
     var relaxShipZoneData = [
         [126.9526906288968, 31.255963776795895],
         [128.125765427054, 31.255963776795895],
         [128.125765427054, 30.508900176056386],
         [126.9526906288968, 30.508900176056386]
+    ]
+
+    var wordZone = [
+        [127.17034233101498, 30.8991424661195],
+        [127.55548680400756, 30.8991424661195],
+        [127.91352969785515, 30.8991424661195]
     ]
 
     //坐标转换
@@ -45,19 +52,59 @@ export default function addAlarmZone(map) {
         areaFeature.setStyle(style)
         source.addFeature(areaFeature)
     }
-
+    function drawWordZone(transPointData,source) {
+        var len = transPointData.length
+        for (var i = 0; i < len; i++) {
+            var wordFeature = new Feature(
+                new Point(transPointData[i])
+            )
+            var textcontent
+            switch (i) {
+                case 0:
+                    textcontent = "作"
+                    break;
+                case 1:
+                    textcontent = "业"
+                    break;
+                case 2:
+                    textcontent = "区"
+                    break;
+                default:
+                    break;
+            }
+            var style = new Style({
+                text: new Text({
+                    font: 'bold 16px serif',
+                    text: textcontent,
+                    fill: new Fill({
+                        color: "#2fe"
+                    })
+                })
+            })
+            wordFeature.setStyle(style)
+            source.addFeature(wordFeature)
+        }
+    }
     var _relaxShipZoneData = tranPoint(relaxShipZoneData)
 
 
     drawAllFishZoneAreaData(_relaxShipZoneData, relaxShipZoneSource)
+    drawWordZone(tranPoint(wordZone),wordZoneSource)
 
     var relaxShipZoneLayer = new VectorLayer({
         source: relaxShipZoneSource,
     })
 
-    relaxShipZoneLayer.setVisible(true)
-    map.addLayer(relaxShipZoneLayer)
+    var wordZoneLayer = new VectorLayer({
+        source: wordZoneSource
+    })
 
-    return relaxShipZoneLayer
+    map.addLayer(relaxShipZoneLayer)
+    map.addLayer(wordZoneLayer)
+
+    var temp = []
+    temp.push(relaxShipZoneLayer)
+    temp.push(wordZoneLayer)
+    return temp
 
 }   

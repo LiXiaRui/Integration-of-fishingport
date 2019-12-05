@@ -10,6 +10,7 @@ import addShip from "./addShip";
 export default function addAlarmZone(map) {
 
     var fishingZoneSource = new VectorSource()
+    var wordZoneSource = new VectorSource()
 
 
     var fishingZoneData = [
@@ -19,6 +20,11 @@ export default function addAlarmZone(map) {
         [126.9526906288968, 28.508900176056386]
     ]
 
+    var wordZone = [
+        [127.17034233101498, 28.902621661875756],
+        [127.55548680400756, 28.902621661875756],
+        [127.91352969785515, 28.902621661875756]
+    ]
     //坐标转换
     function tranPoint(coordinate) {
         let len = coordinate.length
@@ -48,22 +54,59 @@ export default function addAlarmZone(map) {
         areaFeature.setStyle(style)
         fishingZoneSource.addFeature(areaFeature)
     }
-
+    function drawWordZone(transPointData,source) {
+        var len = transPointData.length
+        for (var i = 0; i < len; i++) {
+            var wordFeature = new Feature(
+                new Point(transPointData[i])
+            )
+            var textcontent
+            switch (i) {
+                case 0:
+                    textcontent = "海"
+                    break;
+                case 1:
+                    textcontent = "钓"
+                    break;
+                case 2:
+                    textcontent = "区"
+                    break;
+                default:
+                    break;
+            }
+            var style = new Style({
+                text: new Text({
+                    font: 'bold 16px serif',
+                    text: textcontent,
+                    fill: new Fill({
+                        color: "#2fe"
+                    })
+                })
+            })
+            wordFeature.setStyle(style)
+            source.addFeature(wordFeature)
+        }
+    }
 
     var _fishingZoneData = tranPoint(fishingZoneData)
 
     drawAllFishZoneAreaData(_fishingZoneData, fishingZoneSource)
+    drawWordZone(tranPoint(wordZone),wordZoneSource)
 
-
+    var wordZoneLayer = new VectorLayer({
+        source: wordZoneSource
+    })
 
     var fishingZoneLayer = new VectorLayer({
         source: fishingZoneSource,
-        visible: false
     })
 
 
-    fishingZoneLayer.setVisible(true)
     map.addLayer(fishingZoneLayer)
+    map.addLayer(wordZoneLayer)
 
-    return fishingZoneLayer
+    var temp = []
+    temp.push(fishingZoneLayer)
+    temp.push(wordZoneLayer)
+    return temp
 }   

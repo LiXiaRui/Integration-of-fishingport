@@ -144,6 +144,7 @@ import addProtectionZone from "../../js/addProtectionZone"
 import addBreedZone from "../../js/addBreedZone"
 import addFishingZone from "../../js/addFishingZone"
 import addRelaxZone from "../../js/addRelaxZone"
+import addShipOfAlarm from "../../js/addShip"
 import VectorLayer from 'ol/layer/Vector'
 export default {
   name: "HelloWorld",
@@ -160,7 +161,9 @@ export default {
       returnRelaxZoneLayer:null,
       returnBreedZoneLayer:null,
       returnFishingZoneLayer:null,
-      returnaLarmZoneLayer:null
+      returnaLarmZoneLayer:null,
+      returnIntervalAndShipLayer:null,
+      returnProtection:null,
     };
   },
   watch:{
@@ -168,28 +171,35 @@ export default {
         if (newVal){
          this.returnLreturnRelaxZoneLayerayer = addRelaxZone(this.map)
         }else{
-          this.map.removeLayer(this.returnLreturnRelaxZoneLayerayer)
+          this.map.removeLayer(this.returnLreturnRelaxZoneLayerayer[0])
+          this.map.removeLayer(this.returnLreturnRelaxZoneLayerayer[1])
         }
     },
     alarmZone: function(newVal,oldVal){
       if (newVal){
-         this.returnaLarmZoneLayer = addProtectionZone(this.map)
+         this.returnProtection = addProtectionZone(this.map)
+         this.returnIntervalAndShipLayer = addShipOfAlarm(this.map)
         }else{
-          this.map.removeLayer(this.returnaLarmZoneLayer)
+          this.map.removeLayer(this.returnProtection[0])
+          this.map.removeLayer(this.returnProtection[1])
+          this.map.removeLayer(this.returnIntervalAndShipLayer[1])
+          clearInterval(this.returnIntervalAndShipLayer[0])
         }
     },
     breedZone: function(newVal,oldVal){
       if (newVal){
          this.returnBreedZoneLayer = addBreedZone(this.map)
         }else{
-          this.map.removeLayer(this.returnBreedZoneLayer)
+          this.map.removeLayer(this.returnBreedZoneLayer[0])
+          this.map.removeLayer(this.returnBreedZoneLayer[1])
         }
     },
     fishingZone: function(newVal,oldVal){
       if (newVal){
          this.returnFishingZoneLayer = addFishingZone(this.map)
         }else{
-          this.map.removeLayer(this.returnFishingZoneLayer)
+          this.map.removeLayer(this.returnFishingZoneLayer[0])
+          this.map.removeLayer(this.returnFishingZoneLayer[1])
         }
     }
   },

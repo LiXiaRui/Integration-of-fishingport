@@ -15,8 +15,8 @@ export default function addShip(map){
         source: new Vector()
     })
 
-    var shipX = [124.55532704987269,125.96099372772944,126.96099372772944,127.5648312701592,128.14936958986868,128.9943457747954]
-    var shipY = [31.89606535438317]
+    var shipX = [124.17324417000022,124.96216725000018,126.22452203618612,126.96099372772944,127.5648312701592,128.14936958986868,128.9943457747954]
+    var shipY = [30.418853116611288,31.402412023816353,31.882182328586026,31.89606535438317,31.89606535438317,31.89606535438317,31.89606535438317]
     var shipRotation = (PI/2)
 
     var styleNormal = new Style({
@@ -41,24 +41,34 @@ export default function addShip(map){
             shipLayer.getSource().removeFeature(feature)
         }
         var shipFeature= new Feature({
-			geometry: new Point(fromLonLat([shipX[i%6],shipY[0]]))
+			geometry: new Point(fromLonLat([shipX[i%7],shipY[i%7]]))
         })
         // shipFeature.setProperties(shipInfo)  
         shipFeature.setId(shipId)    
-        if((i%6) == 2 || (i%6) == 3){
+        if((i%7) == 3 || (i%7) == 4){
             shipFeature.setStyle(styleAlarm);
         }else{
+            if((i%7) == 0){
+                styleNormal.getImage().setRotation((30*PI/180))
+            }else if((i%7) == 1){
+                styleNormal.getImage().setRotation((60*PI/180))
+            }else{
+                styleNormal.getImage().setRotation((90*PI/180))
+            }
             shipFeature.setStyle(styleNormal);
         }
         shipLayer.getSource().addFeature(shipFeature)
     }
 
     var i = 0
-    setInterval(() => {
+    var startInterval = setInterval(() => {
         map.removeLayer(shipLayer)
         ship(1)
         i++
         map.addLayer(shipLayer)
     },2000)
-
+    var temp = []
+    temp.push(startInterval)
+    temp.push(shipLayer)
+    return temp
 }

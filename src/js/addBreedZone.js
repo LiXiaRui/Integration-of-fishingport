@@ -10,6 +10,8 @@ import { transform } from 'ol/proj'
 export default function addAlarmZone(map) {
 
     var breedZoneSource = new VectorSource()
+    var wordZoneSource = new VectorSource()
+
 
     var breedZoneData = [
         [126.9526906288968, 30.255963776795895],
@@ -18,6 +20,11 @@ export default function addAlarmZone(map) {
         [126.9526906288968, 29.508900176056386]
     ]
 
+    var wordZone = [
+        [127.17034233101498, 29.894519085431483],
+        [127.55548680400756, 29.894519085431483],
+        [127.91352969785515, 29.894519085431483]
+    ]
     //坐标转换
     function tranPoint(coordinate) {
         let len = coordinate.length
@@ -47,21 +54,59 @@ export default function addAlarmZone(map) {
         areaFeature.setStyle(style)
         breedZoneSource.addFeature(areaFeature)
     }
-
+    function drawWordZone(transPointData,source) {
+        var len = transPointData.length
+        for (var i = 0; i < len; i++) {
+            var wordFeature = new Feature(
+                new Point(transPointData[i])
+            )
+            var textcontent
+            switch (i) {
+                case 0:
+                    textcontent = "养"
+                    break;
+                case 1:
+                    textcontent = "殖"
+                    break;
+                case 2:
+                    textcontent = "区"
+                    break;
+                default:
+                    break;
+            }
+            var style = new Style({
+                text: new Text({
+                    font: 'bold 16px serif',
+                    text: textcontent,
+                    fill: new Fill({
+                        color: "#2fe"
+                    })
+                })
+            })
+            wordFeature.setStyle(style)
+            source.addFeature(wordFeature)
+        }
+    }
 
     var _breedZoneData = tranPoint(breedZoneData)
 
 
     drawAllFishZoneAreaData(_breedZoneData, breedZoneSource)
+    drawWordZone(tranPoint(wordZone),wordZoneSource)
 
+    var wordZoneLayer = new VectorLayer({
+        source: wordZoneSource
+    })
 
     var breedZoneLayer = new VectorLayer({
         source: breedZoneSource,
     })
 
-    breedZoneLayer.setVisible(true)
     map.addLayer(breedZoneLayer)
-
-    return breedZoneLayer
+    map.addLayer(wordZoneLayer)
+    var temp = []
+    temp.push(breedZoneLayer)
+    temp.push(wordZoneLayer)
+    return temp
 
 }   
