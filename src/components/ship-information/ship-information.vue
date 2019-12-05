@@ -367,6 +367,7 @@ export default {
   position: relative;
   margin-top: 200px;
   float: left;
+  
 }
 
 .detailMenu {
@@ -375,6 +376,7 @@ export default {
   left: 50px;
   width: 500px;
   height: 600px;
+  font-size: 16px;
   //  background-color: #99a9bf;
 }
 
@@ -410,7 +412,9 @@ export default {
 .el-table tr {
   background-color: transparent;
 }
-
+.el-button--text{
+  font-size: 20px;
+}
 /**船信息图框样式 start*/
 .ol-popup {
   position: absolute;

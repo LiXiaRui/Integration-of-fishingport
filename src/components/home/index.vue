@@ -280,7 +280,8 @@ export default {
 
 <style>
 .el-menu--horizontal>.el-submenu .el-submenu__title{
-  padding: 0 10px;
-  font-size: 16px;
+  padding: 0 12px;
+  font-size: 20px;
+  color: rgb(48, 49, 51);
 }
 </style>
