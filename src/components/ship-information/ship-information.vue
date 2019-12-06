@@ -20,15 +20,15 @@
           </el-input>
         </div>
       </div>
-      <div class="shipType">
+      <!--在地图上显示渔船信息菜单 -->
+      <!-- <div class="shipType">
         <el-table
           :data="tableData"
           style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.8;"
           row-key="id"
           border
           default-expand-all
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-        >
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
           <el-table-column prop="type" label="渔船信息" width="143">
             <template slot-scope="scope">
               <el-button
@@ -40,31 +40,59 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
+      </div> -->
     </div>
     <div class="shipDetail">
-      <el-table
-        :data="shipData"
-        v-if="show"
-        style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
-        row-key="id"
-        border
-        default-expand-all
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-      >
-        <el-table-column label="船东" width="130">
-          <template slot-scope="scope">
-            <el-button
-              @click="shipershow==false? (shipershow=true):(shipershow=false);showShipInMapCenter(scope.row.shiplord)"
-              type="text"
-              size="small"
-            >{{scope.row.shiplord}}</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
-        <el-table-column prop="shipstatus" label="渔船状态" width="135"></el-table-column>
-      </el-table>
-      <div class="shiplord">
+      <div class="drawbutton">
+        <el-button @click="showShip()"  icon = "el-icon-caret-top" type="primary" style="margin-left: 90%;margin-top:40px;" >
+        </el-button>
+      </div>
+      <div class="shipInfor">
+        <el-table           
+          :data="shipData"
+          v-if="showShipM"
+          style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
+          row-key="id"
+          border
+          default-expand-all
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+          <el-table-column label="船东" width="130">
+            <template slot-scope="scope">
+              <el-button
+                @click="shipershow==false? (shipershow=true):(shipershow=false);showShipInMapCenter(scope.row.shiplord)"
+                type="text"
+                size="small"
+              >{{scope.row.shiplord}}</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
+          <el-table-column prop="shipstatus" label="渔船状态" width="135"></el-table-column>
+        </el-table>
+        <el-table           
+          :data="shipData"
+          v-if="showShipS"
+          style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
+          row-key="id"
+          border
+          default-expand-all
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+          <el-table-column label="船东" width="130">
+            <template slot-scope="scope">
+              <el-button
+                @click="shipershow==false? (shipershow=true):(shipershow=false);showShipInMapCenter(scope.row.shiplord)"
+                type="text"
+                size="small"
+              >{{scope.row.shiplord}}</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
+          <el-table-column prop="shipstatus" label="渔船状态" width="135"></el-table-column>
+        </el-table>
+        
+      </div>
+      
+     <!-- 显示船东信息 -->
+      <!-- <div class="shiplord">
         <el-table
           :data="shiperData"
           v-if="shipershow"
@@ -78,7 +106,7 @@
           <el-table-column prop="phone" label="手机号" width="130"></el-table-column>
           <el-table-column prop="shipnum" label="渔船数量" width="135"></el-table-column>
         </el-table>
-      </div>
+      </div> -->
     </div>
     <!-- <router-view></router-view> -->
   </div>
@@ -101,6 +129,8 @@ import addCircle from "../../js/addCircle";
 
 export default {
   name: "HelloWorld",
+  props:["showShipM"],
+  props:["showShipS"],
   data() {
     return {
       map: null,
@@ -109,42 +139,6 @@ export default {
       input2: "",
       input3: "",
       select: "",
-      tableData: [
-        {
-          id: 1,
-          type: "远洋渔船"
-        },
-        {
-          id: 2,
-          type: "休闲渔船"
-        },
-        {
-          id: 3,
-          type: "国内渔船",
-          children: [
-            {
-              id: 31,
-              type: "船类型1"
-            },
-            {
-              id: 32,
-              type: "船类型2"
-            },
-            {
-              id: 33,
-              type: "船类型3"
-            }
-          ]
-        },
-        {
-          id: 4,
-          type: "海钓渔船"
-        },
-        {
-          id: 5,
-          type: "执法船展示"
-        }
-      ],
       shipData: [
         {
           id: 1001,
@@ -219,7 +213,8 @@ export default {
       ],
       show: false,
       shipershow: false,
-      circleLayer: null
+      circleLayer: null,
+      drawer: false,
     };
   },
   methods: {
@@ -265,13 +260,14 @@ export default {
       });
     },
     //
-    handleClick(row) {
-      console.log(row);
-      this.$notify({
-        title: "提示",
-        message: "这是一条不会自动关闭的消息",
-        duration: 0
-      });
+    showShip(){
+      if(this.showShipM == true){
+        this.showShipM = false;
+      }
+      else{
+        this.showShipM = true;
+      }
+      
     },
     showShipInMapCenter(val) {
       var name
@@ -385,8 +381,14 @@ export default {
   width: 550px;
   height: 700px;
   top: 300px;
-  left: 70%;
+  right:0%;
   // background-color:#99a9bf;
+}
+.drawbutton{
+  position: relative;
+  width: 550px;
+  height: 100px;
+  // background-color:aqua;
 }
 .shipInfor {
   position: relative;
@@ -480,4 +482,5 @@ p{
   opacity: 0.6;
 }
 
+.el-drawer rtl{}
 </style>

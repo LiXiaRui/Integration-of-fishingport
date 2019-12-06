@@ -7,30 +7,48 @@
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
-          @select="handleSelect"
-        >
+          @select="handleSelect">
           <el-submenu index="shipInformation" @click.native="goTo('/shipInformation')">
             <template slot="title">渔船基本信息</template>
             <el-submenu index="2-1">
+              <template slot="title">远洋渔船</template>
+            </el-submenu>
+            <el-submenu index="2-2">
+              <template slot="title">休闲渔船</template>
+            </el-submenu>
+            <el-submenu index="2-3">
+              <template slot="title">国内渔船</template>
+              <el-menu-item @click="showShipMess()">船类型1</el-menu-item>
+              <el-menu-item index="2-1-3">船类型2</el-menu-item>
+              <el-menu-item index="2-1-3">船类型3</el-menu-item>
+            </el-submenu>
+            <el-submenu index="2-4">
+              <template slot="title">海钓渔船</template>
+            </el-submenu>
+            <el-submenu index="2-5">
+              <template slot="title">执法船展示</template>
+            </el-submenu>
+            <el-submenu index="2-6">
               <template slot="title">统计分析</template>
               <el-menu-item index="shipInformation" @click.native="goTo('/shipInformation')">渔船类型统计</el-menu-item>
               <el-menu-item index="2-1-2">渔船归属统计</el-menu-item>
               <el-menu-item index="2-1-3">在港离港统计</el-menu-item>
             </el-submenu>
-            <el-submenu index="2-2">
+            <el-submenu index="2-7">
               <template slot="title">统计分析</template>
               <el-menu-item index="2-2-1">渔船信息检索</el-menu-item>
             </el-submenu>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">渔船船员信息</template>
-            <el-submenu index="3-1">
+            <el-menu-item @click="showShipStuff()">船员信息</el-menu-item>
+            <el-submenu index="3-2">
               <template slot="title">统计分析</template>
               <el-menu-item index="3-1-1">年龄统计</el-menu-item>
               <el-menu-item index="3-1-2">性别统计</el-menu-item>
               <el-menu-item index="3-1-3">健康统计</el-menu-item>
             </el-submenu>
-            <el-submenu index="3-2">
+            <el-submenu index="3-3">
               <template slot="title">基本查询</template>
               <el-menu-item index="3-2-1">等级状态查询</el-menu-item>
               <el-menu-item index="3-2-1">持证状态查询</el-menu-item>
@@ -133,6 +151,8 @@
       </el-header>
       <el-main>
         <router-view
+          :showShipM="showShipM"
+          :showShipS="showShipS"
           :relaxZone="relaxZone"
           :alarmZone="alarmZone"
           :breedZone="breedZone"
@@ -171,7 +191,10 @@ export default {
       returnFishingZoneLayer: null,
       returnaLarmZoneLayer: null,
       returnIntervalAndShipLayer: null,
-      returnProtection: null
+      returnProtection: null,
+      showShipM: false,
+      showShipS: false,
+
     };
   },
   watch: {
@@ -220,6 +243,17 @@ export default {
       console.log("success");
       this.$router.replace(path);
     },
+    showShipMess(){
+      this.showShipS = false;
+      this.showShipM = true;
+    },
+    showShipStuff(){
+      this.showShipM = false;
+      this.showShipS = true;
+
+    },
+
+
     handleCheckedCitiesChange() {
       this.relaxZone = containZone(
         this.checkList,
