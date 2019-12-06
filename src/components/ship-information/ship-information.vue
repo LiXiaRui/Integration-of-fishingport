@@ -384,7 +384,7 @@ export default {
   position: absolute;
   width: 550px;
   height: 700px;
-  top: 400px;
+  top: 300px;
   left: 70%;
   // background-color:#99a9bf;
 }
@@ -464,4 +464,20 @@ export default {
   font-size: 14px;
 }
 /**船信息图框样式 end*/
+
+.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover{
+color: red;
+}
+
+
+p{
+  font-size: 18px;
+  padding: 2px;
+}
+
+.ol-popup{
+  font-family: Serif;
+  opacity: 0.6;
+}
+
 </style>
