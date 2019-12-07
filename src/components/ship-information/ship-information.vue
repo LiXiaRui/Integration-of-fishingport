@@ -42,7 +42,7 @@
         </el-table>
       </div> -->
     </div>
-    <div class="shipDetail">
+    <div class="shipDetail" v-if="shipdiv">
       <div class="drawbutton">
         <el-button @click="showShip()"  icon = "el-icon-caret-top" type="primary" style="margin-left: 90%;margin-top:40px;" >
         </el-button>
@@ -50,7 +50,7 @@
       <div class="shipInfor">
         <el-table           
           :data="shipData"
-          v-if="showShipM"
+          v-if="showShipMess"
           style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
           row-key="id"
           border
@@ -67,29 +67,34 @@
           </el-table-column>
           <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
           <el-table-column prop="shipstatus" label="渔船状态" width="135"></el-table-column>
-        </el-table>
-        <el-table           
-          :data="shipData"
-          v-if="showShipS"
-          style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
-          row-key="id"
-          border
-          default-expand-all
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-          <el-table-column label="船东" width="130">
-            <template slot-scope="scope">
-              <el-button
-                @click="shipershow==false? (shipershow=true):(shipershow=false);showShipInMapCenter(scope.row.shiplord)"
-                type="text"
-                size="small"
-              >{{scope.row.shiplord}}</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
-          <el-table-column prop="shipstatus" label="渔船状态" width="135"></el-table-column>
-        </el-table>
-        
+        </el-table>      
       </div>
+      <div class="stuffDetail" v-if="stuffdiv">
+        <div class="drawbuttonstuff">
+          <el-button @click="showShip()"  icon = "el-icon-caret-top" type="primary" style="margin-left: 90%;margin-top:40px;" >
+          </el-button>
+        </div>
+          <el-table           
+            :data="shipData"
+            v-if="showShipMess"
+            style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
+            row-key="id"
+            border
+            default-expand-all
+            :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+            <el-table-column label="船东" width="130">
+              <template slot-scope="scope">
+                <el-button
+                  @click="shipershow==false? (shipershow=true):(shipershow=false);showShipInMapCenter(scope.row.shiplord)"
+                  type="text"
+                  size="small"
+                >{{scope.row.shiplord}}</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
+          </el-table>
+          
+        </div>
       
      <!-- 显示船东信息 -->
       <!-- <div class="shiplord">
@@ -129,8 +134,7 @@ import addCircle from "../../js/addCircle";
 
 export default {
   name: "HelloWorld",
-  props:["showShipM"],
-  props:["showShipS"],
+  props:["shipdiv","stuffdiv"],
   data() {
     return {
       map: null,
@@ -215,6 +219,7 @@ export default {
       shipershow: false,
       circleLayer: null,
       drawer: false,
+      showShipMess: false,
     };
   },
   methods: {
@@ -261,13 +266,15 @@ export default {
     },
     //
     showShip(){
-      if(this.showShipM == true){
-        this.showShipM = false;
+      if(this.showShipMess == true){
+        this.showShipMess = false;
+        console.log("信息隐藏");
+        console.log(this.stuffdiv);
       }
       else{
-        this.showShipM = true;
-      }
-      
+        this.showShipMess = true;
+        console.log("信息显示");
+      }      
     },
     showShipInMapCenter(val) {
       var name
@@ -384,8 +391,22 @@ export default {
   right:0%;
   // background-color:#99a9bf;
 }
+.stuffDetail {
+  position: absolute;
+  width: 550px;
+  height: 700px;
+  top: 300px;
+  right:0%;
+  // background-color:#99a9bf;
+}
 .drawbutton{
   position: relative;
+  width: 550px;
+  height: 100px;
+  // background-color:aqua;
+}
+.drawbuttonstuff{
+   position: relative;
   width: 550px;
   height: 100px;
   // background-color:aqua;

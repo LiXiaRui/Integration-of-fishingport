@@ -151,8 +151,8 @@
       </el-header>
       <el-main>
         <router-view
-          :showShipM="showShipM"
-          :showShipS="showShipS"
+          :shipdiv="shipdiv"
+          :stuffdiv="stuffdiv"
           :relaxZone="relaxZone"
           :alarmZone="alarmZone"
           :breedZone="breedZone"
@@ -192,8 +192,8 @@ export default {
       returnaLarmZoneLayer: null,
       returnIntervalAndShipLayer: null,
       returnProtection: null,
-      showShipM: false,
-      showShipS: false,
+      shipdiv: false,
+      stuffdiv: false,
 
     };
   },
@@ -244,13 +244,14 @@ export default {
       this.$router.replace(path);
     },
     showShipMess(){
-      this.showShipS = false;
-      this.showShipM = true;
+      this.stuffdiv = false;
+      this.shipdiv = true;
+      console.log("显示渔船信息,隐藏船员信息");
     },
     showShipStuff(){
-      this.showShipM = false;
-      this.showShipS = true;
-
+      this.shipdiv = false;
+      this.stuffdiv = true;
+      console.log("显示船员信息，隐藏渔船信息");
     },
 
 
