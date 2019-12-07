@@ -42,6 +42,32 @@
         </el-table>
       </div> -->
     </div>
+    <div class="stuffDetail" v-if="stuffdiv">
+        <div class="drawbuttonstuff">
+          <el-button @click="showShip()"  icon = "el-icon-caret-top" type="primary" style="margin-left: 90%;margin-top:40px;" >
+          </el-button>
+        </div>
+          <el-table           
+            :data="shipData"
+            v-if="showShipMess"
+            style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
+            row-key="id"
+            border
+            default-expand-all
+            :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+            <el-table-column label="船东" width="130">
+              <template slot-scope="scope">
+                <el-button
+                  @click="shipershow==false? (shipershow=true):(shipershow=false);showShipInMapCenter(scope.row.shiplord)"
+                  type="text"
+                  size="small"
+                >{{scope.row.shiplord}}</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
+          </el-table>
+          
+        </div>
     <div class="shipDetail" v-if="shipdiv">
       <div class="drawbutton">
         <el-button @click="showShip()"  icon = "el-icon-caret-top" type="primary" style="margin-left: 90%;margin-top:40px;" >
@@ -69,32 +95,7 @@
           <el-table-column prop="shipstatus" label="渔船状态" width="135"></el-table-column>
         </el-table>      
       </div>
-      <div class="stuffDetail" v-if="stuffdiv">
-        <div class="drawbuttonstuff">
-          <el-button @click="showShip()"  icon = "el-icon-caret-top" type="primary" style="margin-left: 90%;margin-top:40px;" >
-          </el-button>
-        </div>
-          <el-table           
-            :data="shipData"
-            v-if="showShipMess"
-            style="width: 100%;margin-bottom: 20px;font-size:14px;Opacity:0.7;"
-            row-key="id"
-            border
-            default-expand-all
-            :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-            <el-table-column label="船东" width="130">
-              <template slot-scope="scope">
-                <el-button
-                  @click="shipershow==false? (shipershow=true):(shipershow=false);showShipInMapCenter(scope.row.shiplord)"
-                  type="text"
-                  size="small"
-                >{{scope.row.shiplord}}</el-button>
-              </template>
-            </el-table-column>
-            <el-table-column prop="shipstuff" label="船员" width="130"></el-table-column>
-          </el-table>
-          
-        </div>
+      
       
      <!-- 显示船东信息 -->
       <!-- <div class="shiplord">
@@ -134,7 +135,7 @@ import addCircle from "../../js/addCircle";
 
 export default {
   name: "HelloWorld",
-  props:["shipdiv","stuffdiv"],
+  props:["stuffdiv","shipdiv"],
   data() {
     return {
       map: null,

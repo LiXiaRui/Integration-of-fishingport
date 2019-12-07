@@ -247,11 +247,15 @@ export default {
       this.stuffdiv = false;
       this.shipdiv = true;
       console.log("显示渔船信息,隐藏船员信息");
+      console.log("stuff=="+this.stuffdiv);
+      console.log("ship=="+this.shipdiv);
     },
     showShipStuff(){
       this.shipdiv = false;
       this.stuffdiv = true;
       console.log("显示船员信息，隐藏渔船信息");
+      console.log("stuff=="+this.stuffdiv);
+      console.log("ship=="+this.shipdiv);
     },
 
 
